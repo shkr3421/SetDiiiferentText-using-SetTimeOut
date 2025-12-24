@@ -1,3 +1,55 @@
+use product_db
+
+db.products.insertMany([
+  {
+    _id: 1,
+    name: "Laptop",
+    category: "electronics",
+    price: 60000,
+    stock: 10,
+    likes: 50
+  },
+  {
+    _id: 2,
+    name: "Mobile",
+    category: "electronics",
+    price: 20000,
+    stock: 25,
+    likes: 120
+  },
+  {
+    _id: 3,
+    name: "Chair",
+    category: "furniture",
+    price: 3000,
+    stock: 40,
+    likes: 30
+  },
+  {
+    _id: 4,
+    name: "Table",
+    category: "furniture",
+    price: 7000,
+    stock: 15,
+    likes: 45
+  },
+  {
+    _id: 5,
+    name: "Headphones",
+    category: "electronics",
+    price: 2500,
+    stock: 60,
+    likes: 80
+  }
+])
+
+
+
+
+
+
+
+
 $set – Scenario Answers
 
 // 1. Update only email
