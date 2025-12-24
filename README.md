@@ -1,192 +1,74 @@
-Below are clear, trainer-ready answers to all questions, explained simply but correctly.
+db.products.insertMany([{_id:1,name:"laptop",category:"Electronics",price:500000},{_id:2,name:"mobile",category:"Electronics",price:20000},{_id:3,name:"chair",category:"furniture",price:3000},{_id:4,name:"table",category:"furniture",price:7000}])
+db.products.find()
 
+db.products.updateMany({category:"electronics"},{$inc:{price:2000}})
 
----
+db.products.find()
+db.products.find().pretty()
+db.products.updateMany({category:"Electronics"},{$inc:{price:2000}})
+db.products.find()
+db.products.updateMany({category:"furniture"},{$mul:{price:1.15}})
+db.products.find()
 
-1️⃣ Difference between DELETE and DROP
+db.products.insertMany([{_id:1,name:"laptop",category:"Electronics",price:500000,year:2024},{_id:2,name:"mobile",category:"Electronics",price:20000,year:2023},{_id:3,name:"chair",category:"furniture",price:3000,year:2021},{_id:4,name:"table",category:"furniture",price:7000,year:2020}])
 
-DELETE	DROP
+db.product.insertMany([{_id:1,name:"laptop",category:"Electronics",price:500000,year:2024},{_id:2,name:"mobile",category:"Electronics",price:20000,year:2023},{_id:3,name:"chair",category:"furniture",price:3000,year:2021},{_id:4,name:"table",category:"furniture",price:7000,year:2020}])
 
-Deletes rows from a table	Deletes the entire table
-Table structure remains	Table structure is removed
-Can use WHERE clause	No WHERE clause
-Can be rolled back (if not committed)	Cannot be rolled back
-DML command	DDL command
+db.products.find()
 
+db.product.find()
 
+db.product.updateMany({year:{$type:"number"}},[{$set:{year:{$dateFromParts:{year:"$year",month:1,day:1}}}}])
 
----
+db.product.find()
 
-2️⃣ Difference between DROP and TRUNCATE
 
-TRUNCATE	DROP
+db.users.insertOne({_id:1,name:"sara",email:"sara@gmail.com",orders:[{order_id:1,product:"mobile",price:8000},{order_id:2,product:"headset",price:3000}]})
 
-Removes all rows	Removes table completely
-Table structure remains	Structure removed
-Faster than DELETE	Faster but destructive
-Cannot use WHERE	Not applicable
-DDL command	DDL command
+db.users.find()
 
+db.users.find().pretty()
 
+db.users.updateOne({_id:1},{$push:{orders:{orders_id:3,product:"charger",price:1000}}})
 
----
+db.users.find().pretty()
 
-3️⃣ Explain ACID Properties
 
-Atomicity → All or nothing (transaction fully completes or rolls back)
 
-Consistency → Database moves from one valid state to another
+db.users.updateOne({_id:1,"orders.order_id":1},{$set:{orders.$.price:15000}})
 
-Isolation → Transactions don’t interfere with each other
+db.users.updateOne({_id:1,"orders.order_id":1},{$set:{"orders.$.price":15000}})
 
-Durability → Once committed, data is permanent even after crash
+db.users.find().pretty()
 
+db.users.updateOne({_id:1},{$pull:{orders:{product:"headset"}}})
 
-👉 Ensures safe and reliable transactions.
+db.users.find().pretty()
 
 
----
 
-4️⃣ How many types of Normalization are there?
+use ecommerce
 
-Commonly used normalization forms:
+db.orders.insertMany([{_id:1,user:"Ali",product:"mobile",category:"electronics",price:15000,qecommerce> db.orders.insertMany([{_id:1,user:"Ali",product:"mobile",category:"electronics",price:15000,qecommerce> db.orders.insertMany([{_id:1,user:"Ali",product:"mobile",category:"electronics",price:15000,qecommerce> db.ordeecommerce> db.orders.insertMany([{_id:1,user:"Ali",product:"mobile",category:"electronics",price:15000,quantity:1},{_id:2,user:"sara",product:"laptop",category:"electronics",price:55000,quantity:1},{_id:3,user:"Ali",product:"headset",category:"electronics",price:2000,quantity:2},{_id:4,user:"john",product:"shirt",category:"clothing",price:1000,quantity:3},{_id:5,user:"sara",product:"shoes",category:"clothing",price:3000,quantity:1}])
 
-1. 1NF – Atomic values
+db.users.find().pretty()
 
 
-2. 2NF – No partial dependency
+db.orders.find().pretty()
 
 
-3. 3NF – No transitive dependency
 
 
-4. BCNF – Stronger than 3NF
+ db.orders.find().pretty()
 
 
-5. 4NF – Removes multi-valued dependency
 
 
-6. 5NF – Removes join dependency
 
+db.orders.aggregate([{$match:{$expr:{$gt:[{multiply:["$price","$quantity"]},10000]}}}])
 
+db.orders.find()
 
-👉 3NF is most commonly used in real systems.
 
+db.orders.aggregate([{$group:{_id:"$category",totalCategorySales:{$sum:{$multiply:["$price","$quantity"]}}}}])
 
----
-
-5️⃣ Fetch the Second Highest Salary (Employee & Department)
-
-Using subquery
-
-SELECT e.name, e.salary, d.dept_name
-FROM employee e
-JOIN department d ON e.dept_id = d.dept_id
-WHERE e.salary = (
-    SELECT MAX(salary)
-    FROM employee
-    WHERE salary < (SELECT MAX(salary) FROM employee)
-);
-
-
----
-
-6️⃣ Explain CRUD in DBMS
-
-CRUD represents basic database operations:
-
-C – Create → INSERT
-
-R – Read → SELECT
-
-U – Update → UPDATE
-
-D – Delete → DELETE
-
-
-👉 Used in all database applications.
-
-
----
-
-7️⃣ What is an Entity Relationship Diagram (ER Diagram)?
-
-A visual representation of database structure
-
-Shows:
-
-Entities (tables)
-
-Attributes (columns)
-
-Relationships
-
-
-Used during database design phase
-
-
-
----
-
-8️⃣ How do you describe Relationships?
-
-Relationships define how entities are connected:
-
-One-to-One (1:1)
-One entity relates to one entity
-
-One-to-Many (1:M)
-One entity relates to multiple entities
-
-Many-to-Many (M:N)
-Multiple entities relate to multiple entities (resolved using junction table)
-
-
-
----
-
-9️⃣ Difference between Primary Key and Unique Key
-
-Primary Key	Unique Key
-
-Uniquely identifies a record	Ensures uniqueness
-Only one per table	Multiple allowed
-Cannot be NULL	Can have one NULL
-Used for relationships	Not mandatory for relationships
-
-
-
----
-
-🔟 Why do we use NOT NULL?
-
-Ensures a column cannot store NULL values
-
-Forces mandatory data
-
-Improves data integrity
-
-Prevents incomplete records
-
-
-👉 Example: student_id, email
-
-
----
-
-✅ Final One-Line Summary (Trainer Level)
-
-> These concepts together ensure structured storage, data integrity, efficient querying, and reliable database operations.
-
-
-
-If you want, I can:
-
-Convert this into viva answers
-
-Add MCQ traps
-
-Explain each with real-life examples
-
-
-Just tell me 👍
