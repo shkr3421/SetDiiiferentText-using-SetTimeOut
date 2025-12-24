@@ -1,74 +1,59 @@
-db.products.insertMany([{_id:1,name:"laptop",category:"Electronics",price:500000},{_id:2,name:"mobile",category:"Electronics",price:20000},{_id:3,name:"chair",category:"furniture",price:3000},{_id:4,name:"table",category:"furniture",price:7000}])
-db.products.find()
+db.social_media.insertMany([
+  { user: "Shashank", platform: "Instagram", followers: 1200, posts: 25, likes: 560 },
+  { user: "Raaj", platform: "Twitter", followers: 850, posts: 18, likes: 430 },
+  { user: "Manish", platform: "Facebook", followers: 640, posts: 30, likes: 390 },
+  { user: "Neha", platform: "Instagram", followers: 980, posts: 22, likes: 510 },
+  { user: "Aman", platform: "LinkedIn", followers: 420, posts: 15, likes: 210 },
+  { user: "Pooja", platform: "Instagram", followers: 1500, posts: 40, likes: 800 },
+  { user: "Karan", platform: "Facebook", followers: 300, posts: 12, likes: 180 },
+  { user: "Sneha", platform: "Twitter", followers: 560, posts: 20, likes: 260 },
+  { user: "Vikas", platform: "LinkedIn", followers: 710, posts: 28, likes: 340 },
+  { user: "Anjali", platform: "Instagram", followers: 900, posts: 24, likes: 450 }
+]);
 
-db.products.updateMany({category:"electronics"},{$inc:{price:2000}})
+db.social_media.find({ platform: "LinkedIn" });
 
-db.products.find()
-db.products.find().pretty()
-db.products.updateMany({category:"Electronics"},{$inc:{price:2000}})
-db.products.find()
-db.products.updateMany({category:"furniture"},{$mul:{price:1.15}})
-db.products.find()
+db.social_media.aggregate([
+  {
+    $group: {
+      _id: "$platform",
+      totalFollowers: { $sum: "$followers" }
+    }
+  }
+]);
 
-db.products.insertMany([{_id:1,name:"laptop",category:"Electronics",price:500000,year:2024},{_id:2,name:"mobile",category:"Electronics",price:20000,year:2023},{_id:3,name:"chair",category:"furniture",price:3000,year:2021},{_id:4,name:"table",category:"furniture",price:7000,year:2020}])
+db.social_media.aggregate([
+  {
+    $group: {
+      _id: "$platform",
+      avgFollowers: { $avg: "$followers" }
+    }
+  }
+]);
 
-db.product.insertMany([{_id:1,name:"laptop",category:"Electronics",price:500000,year:2024},{_id:2,name:"mobile",category:"Electronics",price:20000,year:2023},{_id:3,name:"chair",category:"furniture",price:3000,year:2021},{_id:4,name:"table",category:"furniture",price:7000,year:2020}])
+db.social_media.aggregate([
+  {
+    $group: {
+      _id: "$platform",
+      maxFollowers: { $max: "$followers" }
+    }
+  }
+]);
 
-db.products.find()
+db.social_media.aggregate([
+  {
+    $group: {
+      _id: "$platform",
+      minFollowers: { $min: "$followers" }
+    }
+  }
+]);
 
-db.product.find()
-
-db.product.updateMany({year:{$type:"number"}},[{$set:{year:{$dateFromParts:{year:"$year",month:1,day:1}}}}])
-
-db.product.find()
-
-
-db.users.insertOne({_id:1,name:"sara",email:"sara@gmail.com",orders:[{order_id:1,product:"mobile",price:8000},{order_id:2,product:"headset",price:3000}]})
-
-db.users.find()
-
-db.users.find().pretty()
-
-db.users.updateOne({_id:1},{$push:{orders:{orders_id:3,product:"charger",price:1000}}})
-
-db.users.find().pretty()
-
-
-
-db.users.updateOne({_id:1,"orders.order_id":1},{$set:{orders.$.price:15000}})
-
-db.users.updateOne({_id:1,"orders.order_id":1},{$set:{"orders.$.price":15000}})
-
-db.users.find().pretty()
-
-db.users.updateOne({_id:1},{$pull:{orders:{product:"headset"}}})
-
-db.users.find().pretty()
-
-
-
-use ecommerce
-
-db.orders.insertMany([{_id:1,user:"Ali",product:"mobile",category:"electronics",price:15000,qecommerce> db.orders.insertMany([{_id:1,user:"Ali",product:"mobile",category:"electronics",price:15000,qecommerce> db.orders.insertMany([{_id:1,user:"Ali",product:"mobile",category:"electronics",price:15000,qecommerce> db.ordeecommerce> db.orders.insertMany([{_id:1,user:"Ali",product:"mobile",category:"electronics",price:15000,quantity:1},{_id:2,user:"sara",product:"laptop",category:"electronics",price:55000,quantity:1},{_id:3,user:"Ali",product:"headset",category:"electronics",price:2000,quantity:2},{_id:4,user:"john",product:"shirt",category:"clothing",price:1000,quantity:3},{_id:5,user:"sara",product:"shoes",category:"clothing",price:3000,quantity:1}])
-
-db.users.find().pretty()
-
-
-db.orders.find().pretty()
-
-
-
-
- db.orders.find().pretty()
-
-
-
-
-
-db.orders.aggregate([{$match:{$expr:{$gt:[{multiply:["$price","$quantity"]},10000]}}}])
-
-db.orders.find()
-
-
-db.orders.aggregate([{$group:{_id:"$category",totalCategorySales:{$sum:{$multiply:["$price","$quantity"]}}}}])
-
+db.social_media.aggregate([
+  {
+    $group: {
+      _id: "$platform",
+      totalLikes: { $sum: "$likes" }
+    }
+  }
+]);
